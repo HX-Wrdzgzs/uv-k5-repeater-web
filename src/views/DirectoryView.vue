@@ -35,7 +35,7 @@ const cityOptions = computed(() => [...new Set(repeaters.value.filter((item) => 
 
 <template>
   <section class="page-container directory-page">
-    <div class="directory-heading"><div><span class="eyebrow">NATIONWIDE DIRECTORY</span><h1>全国中继数据</h1><p>以当前 K5DB v3 快照为起点，按地区、频率和模式查找。</p></div><RouterLink class="button button-primary" to="/submit">＋ 提交更新</RouterLink></div>
+    <div class="directory-heading"><div><span class="eyebrow">NATIONWIDE SNAPSHOT</span><h1>全国中继数据目录</h1><p>以当前 K5DB v3 公开快照为起点，按地区、频率和模式查找。数据会变化，也不代表全国完整覆盖。</p></div><RouterLink class="button button-primary" to="/submit">＋ 提交更新</RouterLink></div>
     <div class="filter-bar">
       <label class="search-field"><span aria-hidden="true">⌕</span><input v-model="query" type="search" placeholder="搜索呼号、台站名、城市…" /></label>
       <select v-model="province" aria-label="省份"><option value="">全部省份</option><option v-for="item in provinces" :key="item">{{ item }}</option></select>
