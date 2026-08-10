@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import { cities, provinces, seedRepeaters } from '../data/repeaters'
+import { computed, onMounted, ref } from 'vue'
+import { fetchRepeaters } from '../lib/api'
+import { seedRepeaters } from '../data/repeaters'
+import type { Repeater } from '../types/repeater'
 import { formatDate, formatFrequency, formatOffset } from '../lib/format'
 import StatusBadge from '../components/StatusBadge.vue'
 
@@ -9,16 +11,26 @@ const province = ref('')
 const city = ref('')
 const mode = ref('')
 const showPending = ref(true)
+const repeaters = ref<Repeater[]>(seedRepeaters)
+const loading = ref(true)
+const error = ref('')
+
+onMounted(async () => {
+  try { repeaters.value = await fetchRepeaters() }
+  catch (exception) { error.value = exception instanceof Error ? exception.message : '在线数据暂时不可用，当前显示本地快照' }
+  finally { loading.value = false }
+})
 
 const filtered = computed(() => {
   const search = query.value.trim().toLowerCase()
-  return seedRepeaters.filter((item) => {
+  return repeaters.value.filter((item) => {
     const text = `${item.callsign} ${item.stationName} ${item.province} ${item.city} ${item.district}`.toLowerCase()
     return (!search || text.includes(search)) && (!province.value || item.province === province.value) && (!city.value || item.city === city.value) && (!mode.value || item.mode.includes(mode.value)) && (showPending.value || item.status !== 'pending')
   })
 })
 
-const cityOptions = computed(() => city.value && province.value ? cities.filter((item) => seedRepeaters.some((row) => row.province === province.value && row.city === item)) : cities)
+const provinces = computed(() => [...new Set(repeaters.value.map((item) => item.province))].sort((a, b) => a.localeCompare(b, 'zh-CN')))
+const cityOptions = computed(() => [...new Set(repeaters.value.filter((item) => !province.value || item.province === province.value).map((item) => item.city))].sort((a, b) => a.localeCompare(b, 'zh-CN')))
 </script>
 
 <template>
@@ -31,7 +43,7 @@ const cityOptions = computed(() => city.value && province.value ? cities.filter(
       <select v-model="mode" aria-label="模式"><option value="">全部模式</option><option value="FM">FM</option><option value="AM">AM</option></select>
       <label class="check-control"><input v-model="showPending" type="checkbox" /> 显示待核验</label>
     </div>
-    <div class="result-toolbar"><span><strong>{{ filtered.length }}</strong> 条结果</span><span class="result-note">数据源：{{ seedRepeaters.length }} 条 K5DB v3 构建记录</span></div>
+    <div class="result-toolbar"><span><strong>{{ filtered.length }}</strong> 条结果</span><span class="result-note">{{ loading ? '正在同步 D1 数据…' : error || `在线数据：${repeaters.length} 条` }}</span></div>
     <div class="directory-table-wrap">
       <table class="directory-table"><thead><tr><th>台站</th><th>位置</th><th>接收 / 发射</th><th>亚音</th><th>模式</th><th>状态</th><th>核验</th></tr></thead>
         <tbody><tr v-for="item in filtered" :key="item.id"><td><RouterLink class="station-link" :to="`/repeaters/${encodeURIComponent(item.id)}`"><strong>{{ item.callsign }}</strong><small>{{ item.stationName || '未填写台站名' }}</small></RouterLink></td><td><span>{{ item.province }}</span><small>{{ item.city }}<template v-if="item.district"> · {{ item.district }}</template></small></td><td><span class="freq-inline">{{ formatFrequency(item.rxMhz) }} <i>RX</i></span><small>{{ formatFrequency(item.txMhz) }} TX · {{ formatOffset(item.offsetMhz, item.offsetDirection) }}</small></td><td>{{ item.ctcssHz ? `${item.ctcssHz} Hz` : '无' }}</td><td><span class="mode-chip">{{ item.mode }}</span></td><td><StatusBadge :status="item.status" /></td><td><small>{{ formatDate(item.verifiedAt || item.sourceDate) }}</small></td></tr></tbody>
