@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { riskFor, validateRepeater } from './validation'
+import { normalizeRepeater } from './api'
 
 const valid = {
   province: '广东', city: '广州', district: '番禺', callsign: 'BR7JCB', stationName: '测试台',
@@ -21,5 +22,13 @@ describe('repeater validation', () => {
     expect(riskFor(valid)).toBe('low')
     expect(riskFor({ ...valid, rxOnly: true })).toBe('high')
     expect(riskFor(valid, true)).toBe('high')
+  })
+
+  it('normalizes live D1 rows for the public directory', () => {
+    const item = normalizeRepeater({ id: 'db-1', station_key: 'BR7JCB|广东|广州', province: '广东', city: '广州', callsign: 'BR7JCB', rx_mhz: 439.475, tx_mhz: 434.475, status: 'pending', rx_only: 0 })
+    expect(item.id).toBe('db-1')
+    expect(item.status).toBe('pending')
+    expect(item.offsetMhz).toBe(-5)
+    expect(item.offsetDirection).toBe('-')
   })
 })
