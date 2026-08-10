@@ -1,15 +1,20 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import MapPanel from '../components/MapPanel.vue'
 import StatusBadge from '../components/StatusBadge.vue'
 import { formatDate, formatFrequency, formatOffset } from '../lib/format'
+import { fetchRepeaters } from '../lib/api'
 import { seedMeta, seedRepeaters } from '../data/repeaters'
+import type { Repeater } from '../types/repeater'
 
 const router = useRouter()
-const recent = computed(() => [...seedRepeaters].sort((a, b) => (b.sourceDate || 0) - (a.sourceDate || 0)).slice(0, 6))
-const provinceCount = new Set(seedRepeaters.map((item) => item.province)).size
-const cityCount = new Set(seedRepeaters.map((item) => item.city)).size
+const repeaters = ref<Repeater[]>(seedRepeaters)
+onMounted(async () => { try { repeaters.value = await fetchRepeaters() } catch { /* Keep the bundled snapshot as a read-only fallback. */ } })
+const recent = computed(() => [...repeaters.value].sort((a, b) => (b.sourceDate || 0) - (a.sourceDate || 0)).slice(0, 6))
+const provinceCount = computed(() => new Set(repeaters.value.map((item) => item.province)).size)
+const cityCount = computed(() => new Set(repeaters.value.map((item) => item.city)).size)
+const dataDate = computed(() => Math.max(seedMeta.sourceDate, ...repeaters.value.map((item) => item.sourceDate || 0)))
 
 function openRepeater(id: string) {
   router.push(`/repeaters/${encodeURIComponent(id)}`)
@@ -27,11 +32,11 @@ function openRepeater(id: string) {
           <RouterLink class="button button-primary" to="/repeaters">浏览全国数据 <span>→</span></RouterLink>
           <RouterLink class="button button-secondary" to="/submit">提交一条更新</RouterLink>
         </div>
-        <p class="hero-note"><span class="pulse-dot"></span> 当前数据快照：{{ formatDate(seedMeta.sourceDate) }} · K5DB v{{ seedMeta.version.split('-v')[1]?.split('-')[0] || '3' }}</p>
+        <p class="hero-note"><span class="pulse-dot"></span> 当前数据快照：{{ formatDate(dataDate) }} · K5DB v{{ seedMeta.version.split('-v')[1]?.split('-')[0] || '3' }}</p>
       </div>
       <div class="hero-snapshot">
         <div class="snapshot-head"><span>LIVE SNAPSHOT</span><span class="snapshot-state">● SYNCED</span></div>
-        <div class="snapshot-map-wrap"><MapPanel :repeaters="seedRepeaters" @select="openRepeater" /></div>
+        <div class="snapshot-map-wrap"><MapPanel :repeaters="repeaters" @select="openRepeater" /></div>
         <div class="snapshot-foot"><span>每个点代表一个省级数据聚合</span><RouterLink to="/repeaters">打开地图 →</RouterLink></div>
       </div>
     </div>
@@ -39,7 +44,7 @@ function openRepeater(id: string) {
 
   <section class="stats-section">
     <div class="page-container stat-grid">
-      <div><strong>{{ seedMeta.recordCount }}</strong><span>已发布记录</span></div>
+      <div><strong>{{ repeaters.filter((item) => item.status === 'published').length }}</strong><span>已发布记录</span></div>
       <div><strong>{{ provinceCount }}</strong><span>省级区域</span></div>
       <div><strong>{{ cityCount }}</strong><span>城市覆盖</span></div>
       <div><strong>v{{ seedMeta.formatVersion || 3 }}</strong><span>K5DB 数据格式</span></div>
