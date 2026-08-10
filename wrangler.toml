@@ -1,0 +1,10 @@
+name = "uv-k5-repeater-web"
+compatibility_date = "2026-08-01"
+pages_build_output_dir = "dist"
+
+[vars]
+PUBLIC_SITE_URL = "https://repeater.mizuki.top"
+
+# Configure the production D1 binding in the Cloudflare Pages dashboard:
+# Binding name: DB
+# Database: mizuki-repeater

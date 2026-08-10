@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "version": "LOSEHU132-bin-20260803-public",
+  "releaseDate": "2026-08-03",
+  "database": {
+    "format": "K5DB v3",
+    "sourceDate": "20260728",
+    "records": 430,
+    "sha256": "84ccb5deeb211df62467d7b6f5dc19908ec34f96b36f1eea773f319627070483"
+  },
+  "firmware": {
+    "recommended": "firmware.stable.packed.bin",
+    "sha256": "cc49fb61ac14194f135946a70bb313a8b93d0f212cd9201b87a9a9271ed0240b",
+    "repositoryPath": "release/LOSEHU132-bin-20260803-public"
+  },
+  "tailResourceIncluded": false,
+  "tailEntryPoint": true,
+  "source": "https://github.com/HX-Wrdzgzs/uv-k5-losehu132-wrdzgzs/tree/main/release/LOSEHU132-bin-20260803-public"
+}
