@@ -1,10 +1,38 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import ReleaseStatus from './components/ReleaseStatus.vue'
+import { getCurrentUser, logout } from './lib/api'
+import type { AuthUser } from './lib/api'
 
 const hostname = window.location.hostname
 const isAdminHost = computed(() => hostname.startsWith('admin.'))
 const menuOpen = ref(false)
+const currentUser = ref<AuthUser | null>(null)
+const authLoading = ref(true)
+const authBusy = ref(false)
+
+async function loadCurrentUser() {
+  try {
+    const result = await getCurrentUser()
+    currentUser.value = result.authenticated ? result.user : null
+  } catch {
+    currentUser.value = null
+  } finally {
+    authLoading.value = false
+  }
+}
+
+async function signOut() {
+  authBusy.value = true
+  try {
+    await logout()
+    currentUser.value = null
+  } finally {
+    authBusy.value = false
+  }
+}
+
+onMounted(loadCurrentUser)
 </script>
 
 <template>
@@ -25,7 +53,12 @@ const menuOpen = ref(false)
           <RouterLink to="/account" @click="menuOpen = false">我的提交</RouterLink>
           <RouterLink to="/exports" @click="menuOpen = false">导出</RouterLink>
           <RouterLink v-if="isAdminHost" class="nav-admin" to="/admin" @click="menuOpen = false">审核后台</RouterLink>
-          <RouterLink class="header-login" to="/auth" @click="menuOpen = false">登录 / 注册</RouterLink>
+          <span v-if="authLoading" class="header-auth-state">读取登录状态…</span>
+          <template v-else-if="currentUser">
+            <span class="header-user" :title="currentUser.email">已登录：{{ currentUser.displayName || currentUser.email }}</span>
+            <button class="header-logout" type="button" :disabled="authBusy" @click="signOut">{{ authBusy ? '退出中…' : '退出' }}</button>
+          </template>
+          <RouterLink v-else class="header-login" to="/auth" @click="menuOpen = false">登录 / 注册</RouterLink>
         </nav>
       </div>
     </header>
