@@ -7,7 +7,7 @@ const manifestPath = path.join(root, 'src', 'data', 'repeaters_manifest.json')
 const outputPath = path.join(root, 'migrations', '0002_seed.sql')
 const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'))
 const timestamp = Math.floor(Date.parse('2026-07-26T00:00:00Z') / 1000)
-const quote = (value) => value == null || value === '' ? 'NULL' : `'${String(value).replaceAll("'", "''")}'`
+const quote = (value) => value == null ? 'NULL' : `'${String(value).replaceAll("'", "''")}'`
 const number = (value) => value == null || value === '' ? 'NULL' : String(Number(value))
 const records = manifest.records.map((record) => {
   const id = record.station_key
