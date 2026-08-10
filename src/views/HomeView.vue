@@ -25,11 +25,11 @@ function openRepeater(id: string) {
   <section class="hero-section">
     <div class="page-container hero-grid">
       <div class="hero-copy">
-        <div class="eyebrow"><span class="eyebrow-line"></span> 全国公开中继数据</div>
-        <h1>把全国中继，<br /><em>变成一张能更新的地图。</em></h1>
+        <div class="eyebrow"><span class="eyebrow-line"></span> 公开中继数据目录</div>
+        <h1>把分散的中继数据，<br /><em>变成一张能更新的地图。</em></h1>
         <p class="hero-lede">一份可搜索、可追溯、由无线电爱好者共同维护的频率目录。先查清楚，再上车。</p>
         <div class="hero-actions">
-          <RouterLink class="button button-primary" to="/repeaters">浏览全国数据 <span>→</span></RouterLink>
+          <RouterLink class="button button-primary" to="/repeaters">浏览数据目录 <span>→</span></RouterLink>
           <RouterLink class="button button-secondary" to="/submit">提交一条更新</RouterLink>
         </div>
         <p class="hero-note"><span class="pulse-dot"></span> 当前数据快照：{{ formatDate(dataDate) }} · K5DB v{{ seedMeta.version.split('-v')[1]?.split('-')[0] || '3' }}</p>
