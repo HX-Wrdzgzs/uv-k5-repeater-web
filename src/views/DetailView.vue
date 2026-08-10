@@ -44,7 +44,7 @@ async function reportChange() {
 <template>
   <section v-if="loading" class="page-container loading-state">正在读取中继详情…</section>
   <section v-else-if="repeater" class="page-container detail-page">
-    <RouterLink class="back-link" to="/repeaters">← 返回全国数据</RouterLink>
+    <RouterLink class="back-link" to="/repeaters">← 返回数据目录</RouterLink>
     <div class="detail-layout">
       <article class="detail-main data-card">
         <div class="detail-top"><span class="source-chip">{{ repeater.sourceLabel }}</span><StatusBadge :status="repeater.status" /></div>
