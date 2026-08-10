@@ -49,5 +49,5 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div ref="mapRoot" class="map-panel" aria-label="全国中继分布地图"></div>
+  <div ref="mapRoot" class="map-panel" aria-label="中继数据分布地图"></div>
 </template>
