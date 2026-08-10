@@ -60,10 +60,17 @@ export async function fetchRepeater(id: string) {
   return normalizeRepeater(row)
 }
 
-export function requestMagicLink(email: string) {
+export function requestEmailCode(email: string) {
   return request<{ accepted: boolean }>('/api/v1/auth/email/request', {
     method: 'POST',
     body: JSON.stringify({ email }),
+  })
+}
+
+export function verifyEmailCode(email: string, code: string) {
+  return request<{ authenticated: boolean }>('/api/v1/auth/email/verify', {
+    method: 'POST',
+    body: JSON.stringify({ email, code }),
   })
 }
 
