@@ -24,7 +24,7 @@ export const onRequestPost: PagesHandler = async ({ request, env }) => {
       to: [email],
       subject: '你的中继数据登录验证码',
       text: `你的中继数据登录验证码是：${code}\n\n验证码 10 分钟内有效且只能使用一次。如果不是你本人请求，请忽略这封邮件。`,
-      html: `<p>你的中继数据登录验证码是：</p><p style="font-size:32px;font-weight:700;letter-spacing:8px">${code}</p><p>验证码 10 分钟内有效且只能使用一次。如果不是你本人请求，请忽略这封邮件。</p>,
+      html: `<p>你的中继数据登录验证码是：</p><p style="font-size:32px;font-weight:700;letter-spacing:8px">${code}</p><p>验证码 10 分钟内有效且只能使用一次。如果不是你本人请求，请忽略这封邮件。</p>`,
     }),
   })
   if (!response.ok) return error('邮件服务暂时不可用，请稍后再试', 502)
