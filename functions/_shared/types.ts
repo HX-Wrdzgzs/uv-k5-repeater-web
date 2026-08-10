@@ -2,7 +2,7 @@ export interface D1Statement {
   bind(...values: unknown[]): D1Statement
   first<T = Record<string, unknown>>(): Promise<T | null>
   all<T = Record<string, unknown>>(): Promise<{ results: T[] }>
-  run(): Promise<unknown>
+  run(): Promise<{ meta?: { changes?: number } }>
 }
 
 export interface Env {
@@ -15,6 +15,8 @@ export interface Env {
   GITHUB_OAUTH_REDIRECT_URL?: string
   SESSION_SECRET?: string
   TURNSTILE_SECRET?: string
+  CF_ACCESS_TEAM_DOMAIN?: string
+  CF_ACCESS_AUD?: string
 }
 
 export type PagesHandler = (context: { request: Request; env: Env; params: Record<string, string> }) => Response | Promise<Response>
@@ -27,6 +29,8 @@ export interface SessionUser {
 }
 
 export interface SubmissionPayload {
+  kind?: 'create' | 'update' | 'retire'
+  repeaterId?: string
   province: string
   city: string
   district?: string
