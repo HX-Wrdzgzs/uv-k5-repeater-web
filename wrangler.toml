@@ -5,6 +5,7 @@ pages_build_output_dir = "dist"
 [vars]
 PUBLIC_SITE_URL = "https://repeater.mizuki.top"
 
-# Configure the production D1 binding in the Cloudflare Pages dashboard:
-# Binding name: DB
-# Database: mizuki-repeater
+[[d1_databases]]
+binding = "DB"
+database_name = "mizuki-repeater"
+database_id = "a983d7c4-6501-4157-8839-7fbcbe00f1af"
