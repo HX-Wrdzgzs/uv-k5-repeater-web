@@ -95,4 +95,9 @@ h1, h2, h3, p { margin: 0; }
 .report-form { border-top: 1px solid var(--hairline); margin-top: 20px; padding-top: 18px; }
 .report-form textarea { width: 100%; resize: vertical; }
 .status-rejected { color: #9b3c36; background: #fff1ef; }
+.auth-card input[readonly] { color: var(--muted); background: var(--soft); }
+.auth-code-field { margin-top: 12px; }
+.auth-code-actions { margin-top: 10px; }
+.auth-code-actions .button { margin-top: 0; }
+.auth-change-email { display: block; width: 100%; margin-top: 10px; padding: 0; color: var(--primary-deep); border: 0; background: transparent; font-size: 11px; }
 @media (max-width: 760px) { .export-grid { grid-template-columns: 1fr; } }
