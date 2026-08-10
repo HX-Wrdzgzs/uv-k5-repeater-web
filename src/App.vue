@@ -42,8 +42,8 @@ onMounted(loadCurrentUser)
         <RouterLink class="brand" to="/" @click="menuOpen = false">
           <span class="brand-mark" aria-hidden="true">⌁</span>
           <span>
-            <strong>全国中继</strong>
-            <small>REPEATER DATA</small>
+            <strong>中继数据</strong>
+            <small>REPEATER DIRECTORY</small>
           </span>
         </RouterLink>
         <button class="mobile-menu" type="button" aria-label="打开导航" @click="menuOpen = !menuOpen">☰</button>
@@ -71,7 +71,7 @@ onMounted(loadCurrentUser)
 
     <footer class="site-footer">
       <div>
-        <span class="footer-title">全国中继数据协作站</span>
+        <span class="footer-title">中继数据协作站</span>
         <span class="footer-muted">数据会变化，发射前请结合当地管理部门与台站公告复核。</span>
       </div>
       <div class="footer-links">
