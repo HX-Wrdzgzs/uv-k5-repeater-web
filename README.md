@@ -70,6 +70,8 @@ GITHUB_CLIENT_ID
 GITHUB_CLIENT_SECRET
 GITHUB_OAUTH_REDIRECT_URL
 SESSION_SECRET
+CF_ACCESS_TEAM_DOMAIN
+CF_ACCESS_AUD
 ```
 
 GitHub OAuth 回调地址必须是：
@@ -92,13 +94,15 @@ GET  /api/v1/auth/github/callback
 POST /api/v1/auth/logout
 POST /api/v1/submissions
 GET  /api/v1/submissions/me
+POST /api/v1/reports
 GET  /api/v1/admin/review
+GET  /api/v1/admin/reports
 POST /api/v1/admin/submissions/:id/:action
 GET  /api/v1/exports/:version.json
 GET  /api/v1/exports/:version.csv
 ```
 
-写接口使用 HttpOnly/Secure/SameSite Cookie 会话、Origin 检查、频率限制、服务端格式校验和审计日志。邮箱登录链接 15 分钟过期且只能使用一次；密码不会落库。
+写接口使用 HttpOnly/Secure/SameSite Cookie 会话、Origin 检查、频率限制、服务端格式校验和审计日志。邮箱登录链接 15 分钟过期且通过条件更新保证只能使用一次；密码不会落库。公开目录从 D1 读取已发布记录和待核验提交，待核验记录会明确标注且不会进入导出。管理员接口会校验 Cloudflare Access JWT 的签名、发行者、Audience、过期时间和管理员邮箱。
 
 ## 设计
 
