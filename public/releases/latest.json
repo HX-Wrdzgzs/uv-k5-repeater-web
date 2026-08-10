@@ -8,6 +8,12 @@
     "records": 430,
     "sha256": "84ccb5deeb211df62467d7b6f5dc19908ec34f96b36f1eea773f319627070483"
   },
+  "website": {
+    "version": "k5db-v3-20260726",
+    "sourceDate": "20260726",
+    "records": 374,
+    "scope": "published snapshot"
+  },
   "firmware": {
     "recommended": "firmware.stable.packed.bin",
     "sha256": "cc49fb61ac14194f135946a70bb313a8b93d0f212cd9201b87a9a9271ed0240b",
