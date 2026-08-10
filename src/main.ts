@@ -8,6 +8,7 @@ import AuthView from './views/AuthView.vue'
 import SubmitView from './views/SubmitView.vue'
 import AccountView from './views/AccountView.vue'
 import AdminView from './views/AdminView.vue'
+import ExportView from './views/ExportView.vue'
 import './styles.css'
 
 const router = createRouter({
@@ -20,6 +21,7 @@ const router = createRouter({
     { path: '/submit', component: SubmitView },
     { path: '/account', component: AccountView },
     { path: '/admin', component: AdminView },
+    { path: '/exports', component: ExportView },
   ],
   scrollBehavior: () => ({ top: 0 }),
 })
