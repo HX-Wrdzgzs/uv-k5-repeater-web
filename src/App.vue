@@ -23,6 +23,7 @@ const menuOpen = ref(false)
           <RouterLink to="/repeaters" @click="menuOpen = false">浏览数据</RouterLink>
           <RouterLink to="/submit" @click="menuOpen = false">提交更新</RouterLink>
           <RouterLink to="/account" @click="menuOpen = false">我的提交</RouterLink>
+          <RouterLink to="/exports" @click="menuOpen = false">导出</RouterLink>
           <RouterLink v-if="isAdminHost" class="nav-admin" to="/admin" @click="menuOpen = false">审核后台</RouterLink>
           <RouterLink class="header-login" to="/auth" @click="menuOpen = false">登录 / 注册</RouterLink>
         </nav>
@@ -43,6 +44,7 @@ const menuOpen = ref(false)
       <div class="footer-links">
         <a href="https://github.com/HX-Wrdzgzs/uv-k5-losehu132-wrdzgzs" target="_blank" rel="noreferrer">固件项目</a>
         <RouterLink to="/repeaters">数据目录</RouterLink>
+        <RouterLink to="/exports">数据导出</RouterLink>
         <span>mizuki.top</span>
       </div>
     </footer>
