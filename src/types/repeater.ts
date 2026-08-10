@@ -1,4 +1,4 @@
-export type RepeaterStatus = 'published' | 'pending' | 'retired'
+export type RepeaterStatus = 'published' | 'pending' | 'retired' | 'rejected' | 'draft'
 
 export interface Repeater {
   id: string
@@ -28,6 +28,8 @@ export interface Repeater {
 }
 
 export interface RepeaterInput {
+  kind?: 'create' | 'update' | 'retire'
+  repeaterId?: string
   province: string
   city: string
   district?: string
