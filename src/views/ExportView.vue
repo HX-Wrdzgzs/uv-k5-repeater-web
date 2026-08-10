@@ -9,9 +9,10 @@ const loading = ref(true)
 onMounted(async () => {
   try {
     const response = await fetch('/api/v1/exports/latest.json')
-    const body = await response.json() as { data?: ExportSummary; error?: string }
-    if (!response.ok || !body.data) throw new Error(body.error || '无法读取导出信息')
-    summary.value = body.data
+    const body = await response.json() as ExportSummary & { data?: ExportSummary; error?: string }
+    const payload = body.data || body
+    if (!response.ok || !payload.version) throw new Error(body.error || '无法读取导出信息')
+    summary.value = payload
   } catch (exception) { error.value = exception instanceof Error ? exception.message : '无法读取导出信息' }
   finally { loading.value = false }
 })
