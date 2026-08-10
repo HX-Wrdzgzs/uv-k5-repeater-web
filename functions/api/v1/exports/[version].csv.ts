@@ -1,5 +1,5 @@
 import type { PagesHandler } from '../../../_shared/types'
-import { error } from '../../../_shared/http'
+import { error, sha256 } from '../../../_shared/http'
 
 const columns = ['station_key', 'province', 'city', 'district', 'callsign', 'station_name', 'rx_mhz', 'tx_mhz', 'ctcss_hz', 'mode', 'rx_only', 'source_type', 'source_label', 'source_url', 'source_date', 'collected_date', 'verified_at', 'status', 'note']
 function cell(value: unknown) { const text = value == null ? '' : String(value); return /[",\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text }
@@ -12,6 +12,6 @@ export const onRequestGet: PagesHandler = async ({ env, params }) => {
     const rows = await env.DB.prepare(`SELECT ${columns.join(', ')} FROM repeaters WHERE status = ? ORDER BY province, city, rx_mhz, station_key`).bind('published').all<Record<string, unknown>>()
     if (!rows.results.length) return error('暂无可导出的已发布数据', 404)
     const csv = [columns.join(','), ...rows.results.map((row) => columns.map((column) => cell(row[column])).join(','))].join('\n') + '\n'
-    return new Response(`\uFEFF${csv}`, { headers: { 'Content-Type': 'text/csv; charset=utf-8', 'Content-Disposition': `attachment; filename="${version}.csv"` } })
+    return new Response(`\uFEFF${csv}`, { headers: { 'Content-Type': 'text/csv; charset=utf-8', 'Content-Disposition': `attachment; filename="${version}.csv"`, 'X-Export-Version': version, 'X-Export-SHA256': await sha256(csv), 'Cache-Control': 'public, max-age=300' } })
   } catch (exception) { return error(exception instanceof Error ? exception.message : '生成 CSV 失败', 500) }
 }
