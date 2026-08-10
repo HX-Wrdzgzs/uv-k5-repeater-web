@@ -1,6 +1,18 @@
 import { coordinatesFor } from '../data/repeaters'
 import type { ApiResponse, Repeater, RepeaterInput } from '../types/repeater'
 
+export interface AuthUser {
+  id: string
+  email: string
+  displayName: string | null
+  role: 'user' | 'trusted_contributor' | 'moderator' | 'admin'
+}
+
+export interface CurrentUserResponse {
+  authenticated: boolean
+  user: AuthUser | null
+}
+
 async function request<T>(url: string, init?: RequestInit): Promise<T> {
   const response = await fetch(url, {
     credentials: 'include',
@@ -71,6 +83,17 @@ export function verifyEmailCode(email: string, code: string) {
   return request<{ authenticated: boolean }>('/api/v1/auth/email/verify', {
     method: 'POST',
     body: JSON.stringify({ email, code }),
+  })
+}
+
+export function getCurrentUser() {
+  return request<CurrentUserResponse>('/api/v1/auth/me')
+}
+
+export function logout() {
+  return request<{ loggedOut: boolean }>('/api/v1/auth/logout', {
+    method: 'POST',
+    body: JSON.stringify({}),
   })
 }
 
