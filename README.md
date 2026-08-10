@@ -88,7 +88,8 @@ Pages 自定义域名绑定 `repeater.mizuki.top` 和 `admin.repeater.mizuki.top
 GET  /api/v1/repeaters
 GET  /api/v1/repeaters/:id
 POST /api/v1/auth/email/request
-GET  /api/v1/auth/email/verify?token=...
+POST /api/v1/auth/email/verify
+GET  /api/v1/auth/email/verify?token=...（兼容旧登录链接）
 GET  /api/v1/auth/github/start
 GET  /api/v1/auth/github/callback
 POST /api/v1/auth/logout
@@ -102,7 +103,7 @@ GET  /api/v1/exports/:version.json
 GET  /api/v1/exports/:version.csv
 ```
 
-写接口使用 HttpOnly/Secure/SameSite Cookie 会话、Origin 检查、频率限制、服务端格式校验和审计日志。邮箱登录链接 15 分钟过期且通过条件更新保证只能使用一次；密码不会落库。公开目录从 D1 读取已发布记录和待核验提交，待核验记录会明确标注且不会进入导出。管理员接口会校验 Cloudflare Access JWT 的签名、发行者、Audience、过期时间和管理员邮箱。
+写接口使用 HttpOnly/Secure/SameSite Cookie 会话、Origin 检查、频率限制、服务端格式校验和审计日志。邮箱登录使用 6 位一次性验证码，10 分钟过期且通过条件更新保证只能使用一次；旧的登录链接接口仍兼容，密码不会落库。公开目录从 D1 读取已发布记录和待核验提交，待核验记录会明确标注且不会进入导出。管理员接口会校验 Cloudflare Access JWT 的签名、发行者、Audience、过期时间和管理员邮箱。
 
 ## 设计
 
