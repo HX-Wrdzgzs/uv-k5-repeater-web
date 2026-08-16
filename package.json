@@ -11,6 +11,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "seed:sql": "node scripts/generate-seed.mjs",
+    "snapshot:migration": "node scripts/generate-snapshot-migration.mjs",
     "firmware:package": "node scripts/package-firmware-release.mjs",
     "db:migrate:local": "wrangler d1 migrations apply mizuki-repeater --local"
   },

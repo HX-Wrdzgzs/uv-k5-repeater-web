@@ -17,12 +17,13 @@ button { cursor: pointer; }
 .site-nav { display: flex; align-items: center; gap: 26px; color: var(--muted); font-size: 13px; }
 .site-nav a { transition: color .18s ease; }
 .site-nav a:hover, .site-nav a.router-link-active { color: var(--primary-deep); }
-.site-nav .header-login { padding: 10px 15px; border: 1px solid var(--hairline); border-radius: 8px; color: var(--ink); background: var(--surface); }
+.site-nav .header-login { padding: 10px 15px; border: 1px solid var(--hairline); border-radius: 8px; color: var(--ink); background: var(--surface); }.site-nav .header-auth-state { color: var(--muted); font-size: 11px; }.site-nav .header-user { max-width: 210px; overflow: hidden; color: var(--primary-deep); font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }.site-nav .header-logout { padding: 8px 11px; border: 1px solid var(--hairline); border-radius: 7px; color: var(--muted); background: var(--surface); font-size: 11px; }.site-nav .header-logout:hover { border-color: var(--primary); color: var(--primary-deep); }.site-nav .header-logout:disabled { cursor: wait; opacity: .6; }
 .site-nav .nav-admin { color: var(--primary-deep); }
 .release-status { display: flex; align-items: center; gap: 12px; width: min(1180px, calc(100% - 48px)); margin: 15px auto 0; padding: 10px 13px; border: 1px solid var(--hairline); border-radius: 9px; color: var(--muted); background: var(--surface); font-size: 11px; }
 .release-status-main { display: inline-flex; align-items: center; gap: 8px; color: var(--ink); font-weight: 600; }
 .release-status-meta { color: var(--muted); }
-.release-status a { margin-left: auto; color: var(--primary-deep); font-weight: 600; white-space: nowrap; }
+.release-status-links { display: flex; align-items: center; gap: 14px; margin-left: auto; }
+.release-status a { color: var(--primary-deep); font-weight: 600; white-space: nowrap; }
 .mobile-menu { display: none; border: 0; background: none; color: var(--ink); font-size: 24px; }
 .hero-section { padding: 84px 0 66px; overflow: hidden; }
 .hero-grid { display: grid; grid-template-columns: .95fr 1.05fr; gap: 78px; align-items: center; }

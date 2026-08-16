@@ -6,7 +6,7 @@ interface LatestRelease {
   releaseDate: string
   database: { format: string; sourceDate: string; records: number; sha256: string }
   website?: { version: string; sourceDate: string; records: number; scope: string }
-  firmware: { recommended: string; sha256: string; repositoryPath: string }
+  firmware: { recommended: string; sha256: string; repositoryPath: string; downloadBase: string }
   tailResourceIncluded: boolean
   tailEntryPoint: boolean
   source: string
@@ -33,6 +33,9 @@ onMounted(async () => {
       <span>最新公版 {{ release.version }} · {{ release.database.format }}</span>
     </div>
     <span class="release-status-meta">固件数据库 {{ release.database.sourceDate }} · {{ release.database.records }} 条；网站已发布 {{ release.website?.records || release.database.records }} 条 · 不含私人尾音资源</span>
-    <a :href="release.source" target="_blank" rel="noreferrer">查看 GitHub 文件 →</a>
+    <div class="release-status-links">
+      <a :href="`${release.firmware.downloadBase}/${release.firmware.recommended}`" download>下载推荐固件 →</a>
+      <a :href="release.source" target="_blank" rel="noreferrer">查看发布文件 →</a>
+    </div>
   </aside>
 </template>

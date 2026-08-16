@@ -10,7 +10,7 @@ export const onRequestGet: PagesHandler = async ({ request, env }) => {
   const mode = (url.searchParams.get('mode') || '').trim().toUpperCase()
   const requestedStatus = (url.searchParams.get('status') || 'all').trim()
   const limitValue = Number(url.searchParams.get('limit') || 100)
-  const limit = Math.min(500, Math.max(1, Number.isFinite(limitValue) ? Math.floor(limitValue) : 100))
+  const limit = Math.min(2000, Math.max(1, Number.isFinite(limitValue) ? Math.floor(limitValue) : 100))
   if (!['all', 'published', 'pending'].includes(requestedStatus)) return error('不支持的状态筛选', 422)
 
   try {

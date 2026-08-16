@@ -33,15 +33,18 @@ npx wrangler pages dev dist --compatibility-date=2026-08-01
 
 ## 数据来源和快照
 
-`src/data/repeaters_manifest.json` 是从固件项目的 `repeaters_manifest.json` 复制的 K5DB v3 发布快照。首版导入使用 manifest 中的 374 条最终构建记录，而不是把 423 条候选合并数据全部当成正式数据。
+`src/data/repeaters_manifest.json` 是从固件项目 2026-08-11 截图整理构建产物同步的 K5DB v3 公开快照。当前快照的来源日期为 `20260809`，包含 960 条模拟记录和 227 个城市；纯数字记录被排除，混合台站只保留可写入 K5DB 的模拟 FM 参数。它是可追溯的公开数据快照，不声称覆盖全国全部台站，也不代表官方台站清单。
+
+本次快照还修正了江苏省中继 `JSL005` 的收发方向：收听 `430.610 MHz`、发射 `439.610 MHz`、偏移 `+9 MHz`。构建前后会检查收发频率差与偏移字段是否一致。
 
 更新快照后生成 D1 种子迁移：
 
 ```bash
 npm run seed:sql
+npm run snapshot:migration
 ```
 
-`migrations/0002_seed.sql` 只包含 `published` 记录。`pending` 提交只能写入 `submissions`，API 的固件导出只查询 `repeaters.status = 'published'`。
+`migrations/0002_seed.sql` 只包含 `published` 记录，适合初始化空数据库。`migrations/0003_sync_snapshot_20260809.sql` 用 upsert 同步当前公开快照，不删除快照以外的记录，也不触碰用户、提交、举报、审计或会话数据。`pending` 提交只能写入 `submissions`，API 的固件导出只查询 `repeaters.status = 'published'`。
 
 ## Cloudflare Pages 配置
 
@@ -53,7 +56,13 @@ Build command: npm ci && npm run build
 Build output directory: dist
 ```
 
-创建 D1 数据库 `mizuki-repeater`，执行 `migrations/0001_initial.sql` 和 `migrations/0002_seed.sql`，然后在 Pages 项目绑定：
+创建 D1 数据库 `mizuki-repeater`，初始化时执行 `migrations/0001_initial.sql` 和 `migrations/0002_seed.sql`；已有生产库更新公开快照时执行 `migrations/0003_sync_snapshot_20260809.sql`：
+
+```bash
+npx wrangler d1 migrations apply mizuki-repeater --remote
+```
+
+然后在 Pages 项目绑定：
 
 ```text
 Binding name: DB
@@ -114,15 +123,24 @@ GET  /api/v1/exports/:version.csv
 
 网站的公开固件包只提供公共固件和中继数据文件，不包含维护者个人使用的 `tails.bin` 或 `tails.stable.bin`。固件中的自定义尾音入口保留；被排除的是尾音资源文件，不是菜单入口或功能代码。本地源目录中的个人尾音文件不会被打包脚本修改。
 
+当前公开包：`LOSEHU132-bin-20260816-public`
+
+- 推荐固件：`firmware.packed.bin`
+- 当前固件：`firmware.bin` / `firmware.packed.bin`
+- 数据库：`repeaters.bin`，K5DB v3，960 条模拟记录，227 个城市
+- 数据库 SHA-256：`FF755DCECA0602A581FDEF15CD19219EE8628C250ACC1AEF676CBE686FDDB409`
+- 私人尾音资源：不包含；尾音功能入口：保留
+- 网站下载目录：[`public/releases/LOSEHU132-bin-20260816-public`](./public/releases/LOSEHU132-bin-20260816-public)
+
 发布前使用白名单打包：
 
 ```bash
-npm run firmware:package -- --source H:/uv-k5-wrdzgzs-frw --output H:/uv-k5-public-release
+npm run firmware:package -- --source H:/uv-k5-public-release/source-20260816 --output H:/uv-k5-public-release/LOSEHU132-bin-20260816-public
 ```
 
 完整规则见 [`docs/firmware-release-policy.md`](./docs/firmware-release-policy.md)。
 
-首页的版本提示读取 `public/releases/latest.json`，展示当前公版固件、K5DB 格式、数据日期和“无私人尾音资源”状态。固件仓库中的 `.github/workflows/release-public.yml` 会在发布标签或手动触发时先做静态校验，再用白名单生成公版包；该工作流不会上传 `tails.bin` 或 `tails.stable.bin`。
+首页的版本提示读取 `public/releases/latest.json`，展示当前公开固件、K5DB 格式、数据日期和“无私人尾音资源”状态，并提供推荐固件下载入口。发布包使用白名单生成，不会上传 `tails.bin` 或 `tails.stable.bin`。
 
 固件侧还提供以下安全工具：
 

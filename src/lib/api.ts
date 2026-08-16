@@ -63,7 +63,7 @@ export function normalizeRepeater(record: Record<string, unknown>): Repeater {
 }
 
 export async function fetchRepeaters() {
-  const rows = await request<Record<string, unknown>[]>('/api/v1/repeaters?limit=500')
+  const rows = await request<Record<string, unknown>[]>('/api/v1/repeaters?limit=2000')
   return rows.map(normalizeRepeater)
 }
 

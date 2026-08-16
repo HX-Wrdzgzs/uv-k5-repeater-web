@@ -16,3 +16,17 @@ node scripts/package-firmware-release.mjs --source H:/uv-k5-wrdzgzs-frw --output
 ```
 
 如果输出目录之前残留了上述两个文件，脚本只会清理输出目录中的这两个明确列出的私有资源，不会清理其他文件。
+
+## 当前公开包
+
+`public/releases/LOSEHU132-bin-20260816-public/` 是当前网站发布的无私人尾音包，包含：
+
+- `firmware.bin`
+- `firmware.packed.bin`
+- `firmware.stable.bin`
+- `firmware.stable.packed.bin`
+- `repeaters.bin`
+- `repeaters_manifest.json`
+- `repeaters.build.json`
+
+其中 `repeaters.bin` 使用 2026-08-11 截图整理后的 K5DB v3 数据，包含 960 条模拟记录；`tails.bin` 和 `tails.stable.bin` 均不在公开目录中。上传前应检查 `SHA256SUMS.txt`，并确认固件下载包没有尾音资源文件。

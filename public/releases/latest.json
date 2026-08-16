@@ -1,25 +1,27 @@
 {
-  "schema": 1,
-  "version": "LOSEHU132-bin-20260803-public",
-  "releaseDate": "2026-08-03",
+  "schema": 2,
+  "version": "LOSEHU132-bin-20260816-public",
+  "releaseDate": "2026-08-16",
   "database": {
     "format": "K5DB v3",
-    "sourceDate": "20260728",
-    "records": 430,
-    "sha256": "84ccb5deeb211df62467d7b6f5dc19908ec34f96b36f1eea773f319627070483"
+    "sourceDate": "20260809",
+    "records": 960,
+    "cities": 227,
+    "sha256": "ff755dceca0602a581fdef15cd19219ee8628c250acc1aef676cbe686fddb409"
   },
   "website": {
-    "version": "k5db-v3-20260726",
-    "sourceDate": "20260726",
-    "records": 374,
-    "scope": "published snapshot"
+    "version": "k5db-v3-20260809",
+    "sourceDate": "20260809",
+    "records": 960,
+    "scope": "public analogue snapshot; pending submissions excluded"
   },
   "firmware": {
-    "recommended": "firmware.stable.packed.bin",
-    "sha256": "cc49fb61ac14194f135946a70bb313a8b93d0f212cd9201b87a9a9271ed0240b",
-    "repositoryPath": "release/LOSEHU132-bin-20260803-public"
+    "recommended": "firmware.packed.bin",
+    "sha256": "bb380265614f73d268ba290966f3ab70e6c7e9023505510f0f406529cb6a8de9",
+    "repositoryPath": "public/releases/LOSEHU132-bin-20260816-public",
+    "downloadBase": "/releases/LOSEHU132-bin-20260816-public"
   },
   "tailResourceIncluded": false,
   "tailEntryPoint": true,
-  "source": "https://github.com/HX-Wrdzgzs/uv-k5-losehu132-wrdzgzs/tree/main/release/LOSEHU132-bin-20260803-public"
+  "source": "https://github.com/HX-Wrdzgzs/uv-k5-repeater-web/tree/main/public/releases/LOSEHU132-bin-20260816-public"
 }
