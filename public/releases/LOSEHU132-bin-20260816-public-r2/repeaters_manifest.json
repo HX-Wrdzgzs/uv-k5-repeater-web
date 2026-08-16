@@ -4,11 +4,11 @@
     "version": 3,
     "header_size": 16,
     "entry_size": 16,
-    "region_index_offset": 15376,
+    "region_index_offset": 15344,
     "region_header_size": 16,
     "province_entry_size": 16,
     "city_entry_size": 16,
-    "payload_crc16": 57780
+    "payload_crc16": 3732
   },
   "policy": {
     "source_priority": [
@@ -28,12 +28,12 @@
     "eeprom_end_address": 524287,
     "maximum_binary_size": 245760
   },
-  "source_file": "build_tmp\\repeaters-screenshot-20260811.json",
+  "source_file": "build_tmp\\repeaters-screenshot-20260816.json",
   "curated_override_file": "data\\repeater_curated_overrides.json",
   "regional_override_files": [
     "data\\jiangsu_repeaters_20260728.json"
   ],
-  "curated_updated": 139,
+  "curated_updated": 137,
   "curated_added": 120,
   "excluded_region_count": 30,
   "excluded_regions": [
@@ -47,14 +47,14 @@
     "BR4IN"
   ],
   "source_date": 20260809,
-  "record_count": 960,
-  "binary_size": 19584,
+  "record_count": 958,
+  "binary_size": 19536,
   "province_count": 35,
-  "city_count": 227,
+  "city_count": 226,
   "source_counts": {
     "1": 921,
     "2": 5,
-    "3": 34
+    "3": 32
   },
   "excluded_pure_digital_count": 12,
   "excluded_pure_digital_callsigns": [
@@ -2331,16 +2331,6 @@
       "entry_count": 1,
       "pinyin_initials": "QGTY",
       "t9_code": 29833
-    },
-    {
-      "province_id": 35,
-      "province": "全国",
-      "city_id": 2,
-      "city": "收听专用",
-      "first_entry": 958,
-      "entry_count": 2,
-      "pinyin_initials": "STZY",
-      "t9_code": 30873
     }
   ],
   "records": [
@@ -34719,72 +34709,6 @@
       "source_id": 5,
       "city_id": 1,
       "display_name": "全国频"
-    },
-    {
-      "province": "全国",
-      "city": "收听专用",
-      "district": "航空",
-      "callsign": "RXAIR1215",
-      "station_name": "航空遇险",
-      "display_token": "航空急",
-      "rx_mhz": 121.5,
-      "tx_mhz": 121.5,
-      "ctcss_hz": null,
-      "mode": "AM",
-      "source_type": "government",
-      "source_priority": 3,
-      "source_label": "GOV",
-      "source_date": 20260725,
-      "status": "正常",
-      "note": "航空应急频率，仅接收，禁止发射",
-      "collected_date": 20260726,
-      "station_key": "RXAIR1215|全国|收听专用|航空|V",
-      "rx_only": true,
-      "rx_10hz": 12150000,
-      "offset_10khz": 0,
-      "offset_5khz": 0,
-      "offset_half_step": false,
-      "ctcss_01hz": 0,
-      "tx_ctcss_01hz": 0,
-      "rx_ctcss_01hz": 0,
-      "tx_tone_code": 0,
-      "rx_tone_code": 0,
-      "source_id": 3,
-      "city_id": 2,
-      "display_name": "航空急"
-    },
-    {
-      "province": "全国",
-      "city": "收听专用",
-      "district": "铁路",
-      "callsign": "RXRAIL4675",
-      "station_name": "铁路调度",
-      "display_token": "铁路调",
-      "rx_mhz": 467.5,
-      "tx_mhz": 467.5,
-      "ctcss_hz": null,
-      "mode": "FM",
-      "source_type": "government",
-      "source_priority": 3,
-      "source_label": "GOV",
-      "source_date": 20260725,
-      "status": "正常",
-      "note": "铁路无线列调地面台常用下行频率，仅接收；实际频点可能因线路而异",
-      "collected_date": 20260726,
-      "station_key": "RXRAIL4675|全国|收听专用|铁路|U",
-      "rx_only": true,
-      "rx_10hz": 46750000,
-      "offset_10khz": 0,
-      "offset_5khz": 0,
-      "offset_half_step": false,
-      "ctcss_01hz": 0,
-      "tx_ctcss_01hz": 0,
-      "rx_ctcss_01hz": 0,
-      "tx_tone_code": 0,
-      "rx_tone_code": 0,
-      "source_id": 3,
-      "city_id": 2,
-      "display_name": "铁路调"
     }
   ]
 }

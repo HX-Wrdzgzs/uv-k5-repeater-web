@@ -8,7 +8,15 @@ const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'))
 const sourceDate = String(manifest.source_date || '')
 if (!/^\d{8}$/.test(sourceDate)) throw new Error(`Invalid manifest source_date: ${sourceDate}`)
 
-const outputPath = path.join(root, 'migrations', `0003_sync_snapshot_${sourceDate}.sql`)
+const outputArgument = process.argv.indexOf('--output')
+const outputValue = outputArgument >= 0 ? process.argv[outputArgument + 1] : ''
+if (outputArgument >= 0 && !outputValue) throw new Error('--output requires a migration file path')
+const outputPath = outputValue
+  ? path.resolve(root, outputValue)
+  : path.join(root, 'migrations', `0003_sync_snapshot_${sourceDate}.sql`)
+if (fs.existsSync(outputPath)) {
+  throw new Error(`Refusing to overwrite existing migration: ${outputPath}; pass --output with a new migration filename`)
+}
 const timestamp = Math.floor(Date.parse(`${sourceDate.slice(0, 4)}-${sourceDate.slice(4, 6)}-${sourceDate.slice(6)}T00:00:00Z`) / 1000)
 const quote = (value) => value == null ? 'NULL' : `'${String(value).replaceAll("'", "''")}'`
 const number = (value) => value == null || value === '' ? 'NULL' : String(Number(value))

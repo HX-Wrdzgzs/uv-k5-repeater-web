@@ -33,18 +33,18 @@ npx wrangler pages dev dist --compatibility-date=2026-08-01
 
 ## 数据来源和快照
 
-`src/data/repeaters_manifest.json` 是从固件项目 2026-08-11 截图整理构建产物同步的 K5DB v3 公开快照。当前快照的来源日期为 `20260809`，包含 960 条模拟记录和 227 个城市；纯数字记录被排除，混合台站只保留可写入 K5DB 的模拟 FM 参数。它是可追溯的公开数据快照，不声称覆盖全国全部台站，也不代表官方台站清单。
+`src/data/repeaters_manifest.json` 是从固件项目 2026-08-11 截图整理构建产物同步的 K5DB v3 公开快照。当前快照的来源日期为 `20260809`，包含 958 条模拟记录和 226 个城市；纯数字记录、航空遇险 `RXAIR1215` 和铁路调度 `RXRAIL4675` 等明确排除项不进入公开快照，混合台站只保留可写入 K5DB 的模拟 FM 参数。它是可追溯的公开数据快照，不声称覆盖全国全部台站，也不代表官方台站清单。
 
 本次快照还修正了江苏省中继 `JSL005` 的收发方向：收听 `430.610 MHz`、发射 `439.610 MHz`、偏移 `+9 MHz`。构建前后会检查收发频率差与偏移字段是否一致。
 
-更新快照后生成 D1 种子迁移：
+更新快照后生成 D1 种子迁移。已应用的迁移文件不可覆盖；生成新的公开快照迁移时必须指定一个尚未使用的文件名：
 
 ```bash
 npm run seed:sql
-npm run snapshot:migration
+npm run snapshot:migration -- --output migrations/0005_sync_snapshot_20260809_r2.sql
 ```
 
-`migrations/0002_seed.sql` 只包含 `published` 记录，适合初始化空数据库。`migrations/0003_sync_snapshot_20260809.sql` 用 upsert 同步当前公开快照，不删除快照以外的记录，也不触碰用户、提交、举报、审计或会话数据。`pending` 提交只能写入 `submissions`，API 的固件导出只查询 `repeaters.status = 'published'`。
+`migrations/0002_seed.sql` 只包含当前 958 条 `published` 记录，适合初始化空数据库。`migrations/0003_sync_snapshot_20260809.sql` 是已经应用过的历史 960 条快照 upsert，不删除快照以外的记录；`migrations/0004_remove_non_repeater_listeners.sql` 只删除明确列出的航空和铁路收听专用记录；`migrations/0005_sync_snapshot_20260809_r2.sql` 记录当前 958 条快照。所有迁移都不触碰用户、提交、举报、审计或会话数据。`pending` 提交只能写入 `submissions`，API 的固件导出只查询 `repeaters.status = 'published'`。
 
 ## Cloudflare Pages 配置
 
@@ -56,7 +56,7 @@ Build command: npm ci && npm run build
 Build output directory: dist
 ```
 
-创建 D1 数据库 `mizuki-repeater`，初始化时执行 `migrations/0001_initial.sql` 和 `migrations/0002_seed.sql`；已有生产库更新公开快照时执行 `migrations/0003_sync_snapshot_20260809.sql`：
+创建 D1 数据库 `mizuki-repeater`，初始化时按迁移顺序执行 `migrations/0001_initial.sql` 至 `migrations/0005_sync_snapshot_20260809_r2.sql`；已有生产库更新时按迁移顺序执行：
 
 ```bash
 npx wrangler d1 migrations apply mizuki-repeater --remote
@@ -123,19 +123,20 @@ GET  /api/v1/exports/:version.csv
 
 网站的公开固件包只提供公共固件和中继数据文件，不包含维护者个人使用的 `tails.bin` 或 `tails.stable.bin`。固件中的自定义尾音入口保留；被排除的是尾音资源文件，不是菜单入口或功能代码。本地源目录中的个人尾音文件不会被打包脚本修改。
 
-当前公开包：`LOSEHU132-bin-20260816-public`
+当前公开包：`LOSEHU132-bin-20260816-public-r2`
 
 - 推荐固件：`firmware.packed.bin`
 - 当前固件：`firmware.bin` / `firmware.packed.bin`
-- 数据库：`repeaters.bin`，K5DB v3，960 条模拟记录，227 个城市
-- 数据库 SHA-256：`FF755DCECA0602A581FDEF15CD19219EE8628C250ACC1AEF676CBE686FDDB409`
+- 数据库：`repeaters.bin`，K5DB v3，958 条模拟记录，226 个城市
+- 数据库 SHA-256：`C11FB0E1E81ACB56EF57523A452B75FA1747D46166857793817DE6A7908E3AB1`
+- 明确排除：航空遇险 `RXAIR1215`、铁路调度 `RXRAIL4675`
 - 私人尾音资源：不包含；尾音功能入口：保留
-- 网站下载目录：[`public/releases/LOSEHU132-bin-20260816-public`](./public/releases/LOSEHU132-bin-20260816-public)
+- 网站下载目录：[`public/releases/LOSEHU132-bin-20260816-public-r2`](./public/releases/LOSEHU132-bin-20260816-public-r2)
 
 发布前使用白名单打包：
 
 ```bash
-npm run firmware:package -- --source H:/uv-k5-public-release/source-20260816 --output H:/uv-k5-public-release/LOSEHU132-bin-20260816-public
+npm run firmware:package -- --source H:/uv-k5-public-release/source-20260816 --output H:/uv-k5-public-release/LOSEHU132-bin-20260816-public-r2
 ```
 
 完整规则见 [`docs/firmware-release-policy.md`](./docs/firmware-release-policy.md)。

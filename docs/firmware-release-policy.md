@@ -19,7 +19,7 @@ node scripts/package-firmware-release.mjs --source H:/uv-k5-wrdzgzs-frw --output
 
 ## 当前公开包
 
-`public/releases/LOSEHU132-bin-20260816-public/` 是当前网站发布的无私人尾音包，包含：
+`public/releases/LOSEHU132-bin-20260816-public-r2/` 是当前网站发布的无私人尾音包，包含：
 
 - `firmware.bin`
 - `firmware.packed.bin`
@@ -29,4 +29,4 @@ node scripts/package-firmware-release.mjs --source H:/uv-k5-wrdzgzs-frw --output
 - `repeaters_manifest.json`
 - `repeaters.build.json`
 
-其中 `repeaters.bin` 使用 2026-08-11 截图整理后的 K5DB v3 数据，包含 960 条模拟记录；`tails.bin` 和 `tails.stable.bin` 均不在公开目录中。上传前应检查 `SHA256SUMS.txt`，并确认固件下载包没有尾音资源文件。
+其中 `repeaters.bin` 使用 2026-08-11 截图整理后的 K5DB v3 数据，包含 958 条模拟记录；航空遇险 `RXAIR1215` 和铁路调度 `RXRAIL4675` 已从公开数据库排除。`tails.bin` 和 `tails.stable.bin` 均不在公开目录中。上传前应检查 `SHA256SUMS.txt`，并确认固件下载包没有尾音资源文件。
